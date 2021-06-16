@@ -3,6 +3,8 @@ package me.zlataovce.sysmonitor;
 import me.zlataovce.sysmonitor.datatypes.SystemResources;
 import me.zlataovce.sysmonitor.gatherers.DataGatherer;
 import me.zlataovce.sysmonitor.utils.ConfigManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import java.util.Objects;
 public class SysmonitorController {
 	private final DataGatherer gatherer = new DataGatherer();
 	private final ConfigManager manager = new ConfigManager();
+	private final Logger logger = LoggerFactory.getLogger(SysmonitorController.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(SysmonitorController.class, args);
@@ -29,7 +32,7 @@ public class SysmonitorController {
 	public ResponseEntity<SystemResources> getSystemResources(@RequestParam(value = "key") String key) {
 		if (!Objects.equals(key, manager.getProp().getProperty("apitoken"))) {
 			if (Boolean.parseBoolean(manager.getProp().getProperty("debug"))) {
-				System.out.println("The supplied API key was " + key + ", while the saved one is " + manager.getProp().getProperty("apitoken") + ".");
+				logger.warn("The supplied API key was " + key + ", while the saved one is " + manager.getProp().getProperty("apitoken") + ".");
 			}
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
