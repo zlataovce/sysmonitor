@@ -15,7 +15,7 @@ public class ConfigManager {
     public ConfigManager() {
         this.createConfig();
         try {
-            prop.load(new FileInputStream("app.config"));
+            prop.load(new FileInputStream(new File(Paths.get(System.getProperty("user.dir")).toString(), "app.config")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -25,8 +25,10 @@ public class ConfigManager {
         try {
             File file = new File(Paths.get(System.getProperty("user.dir")).toString(), "app.config");
             if (!file.exists()) {
-                FileWriter writer = new FileWriter(file);
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                 writer.write("apitoken=" + gen.urlsafeToken(10));
+                writer.newLine();
+                writer.write("debug=false");
                 writer.close();
             }
         } catch (IOException e) {

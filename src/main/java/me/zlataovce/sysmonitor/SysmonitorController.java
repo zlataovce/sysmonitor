@@ -28,6 +28,9 @@ public class SysmonitorController {
 	@RequestMapping(value = "/api", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SystemResources> getSystemResources(@RequestParam(value = "key") String key) {
 		if (!Objects.equals(key, manager.getProp().getProperty("apitoken"))) {
+			if (Boolean.parseBoolean(manager.getProp().getProperty("debug"))) {
+				System.out.println("The supplied API key was " + key + ", while the saved one is " + manager.getProp().getProperty("apitoken") + ".");
+			}
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		return new ResponseEntity<>(gatherer.getResource(), HttpStatus.OK);
