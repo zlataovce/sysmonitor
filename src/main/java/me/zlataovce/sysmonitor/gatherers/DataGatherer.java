@@ -1,5 +1,6 @@
 package me.zlataovce.sysmonitor.gatherers;
 
+import me.zlataovce.sysmonitor.datatypes.Processor;
 import me.zlataovce.sysmonitor.datatypes.SystemResources;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -34,7 +35,12 @@ public class DataGatherer {
         return (ram.getTotal() - ram.getAvailable()) / 1048576L;
     }
 
+    public Processor getProcessor() {
+        CentralProcessor cpu = hardware.getProcessor();
+        return new Processor(cpu.getProcessorIdentifier().toString(), cpu.getMaxFreq() / 1000000, cpu.getPhysicalProcessorCount());
+    }
+
     public SystemResources getResource() {
-        return new SystemResources(this.getCPUPercent(), this.getReadableRAMUsed(), this.getReadableRAMTotal(), this.getReadableRAMAvailable());
+        return new SystemResources(this.getCPUPercent(), this.getReadableRAMUsed(), this.getReadableRAMTotal(), this.getReadableRAMAvailable(), this.getProcessor());
     }
 }

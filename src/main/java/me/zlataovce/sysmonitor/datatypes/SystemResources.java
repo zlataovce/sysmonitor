@@ -15,10 +15,14 @@ public class SystemResources {
     @Getter
     private final long ramAvailable;
 
-    public SystemResources(double cpuPercent, long ramUsed, long ramTotal, long ramAvailable) {
+    @Getter
+    private final Processor processor;
+
+    public SystemResources(double cpuPercent, long ramUsed, long ramTotal, long ramAvailable, Processor processor) {
         this.cpuPercent = cpuPercent;
         this.ramUsed = ramUsed;
         this.ramTotal = ramTotal;
         this.ramAvailable = ramAvailable;
+        this.processor = processor;
     }
 }
